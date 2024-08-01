@@ -6,6 +6,10 @@ class EnvSettings(BaseSettings):
     APP_ENV: str
     DEBUG: bool
     ALLOWED_ORIGINS: str
+    SECRET_KEY: str
+    ADMIN_ID: str
+    ADMIN_PASSWORD: str
+    ALGORITHM: str
     REDIS_HOST: str
     REDIS_PORT: str
     REDIS_DATABASE: str
