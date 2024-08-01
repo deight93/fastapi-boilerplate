@@ -5,8 +5,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqladmin import Admin
 from redis import Redis
 
+from app.admin.auth import authentication_admin
+from app.admin.views import UsersAdmin
+from app.core.database import engine
 from app.core.dependency import get_redis, get_db
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
@@ -30,6 +34,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+admin = Admin(app, engine, authentication_backend=authentication_admin)
+admin.add_view(UsersAdmin)
 
 
 @app.get("/file-logging-test")

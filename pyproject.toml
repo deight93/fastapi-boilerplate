@@ -17,6 +17,9 @@ alembic = "^1.13.2"
 psycopg2-binary = "^2.9.9"
 pre-commit = "^3.8.0"
 ruff = "^0.5.5"
+sqladmin = "^0.18.0"
+python-jose = "^3.3.0"
+itsdangerous = "^2.2.0"
 
 
 [build-system]
