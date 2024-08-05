@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    container_name: template-api
+    container_name: api-server
     build: .
     command: bash -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
     volumes:
@@ -15,19 +15,19 @@ services:
     env_file:
       - env/base.env
     networks:
-      - fastapi-template-network
+      - fastapi-boilerplate-network
 
   postgresql-db:
     container_name: postgresql-db
     image: postgres:16-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgresql-data:/var/lib/postgresql/data/
     env_file:
       - env/dev.env
     ports:
       - "5434:5432"
     networks:
-      - fastapi-template-network
+      - fastapi-boilerplate-network
 
   redis-db:
     container_name: redis-db
@@ -37,10 +37,10 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - fastapi-template-network
+      - fastapi-boilerplate-network
 
 volumes:
-  postgres_data:
+  postgresql-data:
 
 networks:
-  fastapi-template-network:
+  fastapi-boilerplate-network:

@@ -1,5 +1,5 @@
 swagger_metadata = dict(
-    title="FastAPI Template",
+    title="FastAPI Boilerplate",
     description="Test API documentation",
     version="0.0.1",
     license_info={

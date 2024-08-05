@@ -39,11 +39,11 @@ APP_ENV=dev
 DEBUG=True
 ALLOWED_ORIGINS=*
 # postgresql
-POSTGRES_USER=template_user
-POSTGRES_PASSWORD=template
+POSTGRES_USER=boilerplate_user
+POSTGRES_PASSWORD=boilerplate
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
-POSTGRES_DB=template-dev-db
+POSTGRES_DB=boilerplate-dev-db
 
 # redis
 REDIS_HOST=redis
@@ -59,11 +59,11 @@ DEBUG=False
 ALLOWED_ORIGINS=http://localhost:8000,http://localhost:3000
 
 # postgresql
-POSTGRES_USER=template_user
-POSTGRES_PASSWORD=template
+POSTGRES_USER=boilerplate_user
+POSTGRES_PASSWORD=boilerplate
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
-POSTGRES_DB=template-prod-db
+POSTGRES_DB=boilerplate-prod-db
 
 # redis
 REDIS_HOST=redis
