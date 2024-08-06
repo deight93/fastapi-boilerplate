@@ -4,11 +4,10 @@ fastapi boilerplate
 
 ## 기능
 
-### JWT, Session, OAuth 인증
-### 백오피스
-### 클라이언트
-### 파일 업로드
-
+JWT, Session, OAuth 인증
+백오피스
+클라이언트
+파일 업로드
 
 ## 환경 설정
 
@@ -16,6 +15,7 @@ fastapi boilerplate
 
 ### env 파일 예시
 
+```
 .
 ├── Dockerfile
 ├── ...
@@ -24,6 +24,7 @@ fastapi boilerplate
 │   ├── dev.env
 │   └── prod.env
 └── ...
+```
 
 `base.env` 
 
@@ -38,6 +39,13 @@ ENV_STATE=dev
 APP_ENV=dev
 DEBUG=True
 ALLOWED_ORIGINS=*
+SECRET_KEY=secret-key
+ALGORITHM=jwt-algorithm
+
+# admin
+ADMIN_ID=boilerplate_user
+ADMIN_PASSWORD=boilerplate
+
 # postgresql
 POSTGRES_USER=boilerplate_user
 POSTGRES_PASSWORD=boilerplate
@@ -57,6 +65,12 @@ REDIS_DATABASE=0
 APP_ENV=prod
 DEBUG=False
 ALLOWED_ORIGINS=http://localhost:8000,http://localhost:3000
+SECRET_KEY=secret-key
+ALGORITHM=jwt-algorithm
+
+# admin
+ADMIN_ID=boilerplate_user
+ADMIN_PASSWORD=boilerplate
 
 # postgresql
 POSTGRES_USER=boilerplate_user
