@@ -2,12 +2,57 @@
 
 fastapi boilerplate
 
-## 기능
+## TODO 기능
 
-### JWT, Session, OAuth 인증
-### 백오피스
-### 클라이언트
-### 파일 업로드
+- 기본기능
+  - 회원
+    - 회원 가입
+    - 로그인/로그아웃
+    - 비밀번호 재설정
+    - 프로필 관리
+    - 회원 탈퇴
+    - 이메일 알림
+    - 2단계 인증(2FA)
+    - 활동 로그
+  - 게시판
+    - 게시판 목록
+    - 게시글 작성
+    - 게시글 수정
+    - 게시글 상세
+    - 게시글 삭제
+    - 파일 업로드
+    - 파일 다운로드
+  - 관리자페이지
+    - 회원 관리
+      - 회원 목록 조회
+      - 회원 정보 수정
+      - 회원 삭제
+      - 회원 권한 설정
+    - 게시판 관리
+      - 게시판 생성 및 수정
+      - 게시글 관리 (수정, 삭제)
+      - 게시글 신고 처리
+    - 통계 및 분석
+      - 회원 가입 통계
+      - 게시글 작성 통계
+      - 사이트 방문자 통계
+    - 콘텐츠 관리
+      - 공지사항 작성 및 수정
+      - FAQ 관리
+      - 이벤트 관리
+    - 권한 관리
+      - 관리자 계정 생성 및 수정
+      - 관리자 권한 설정
+    - 시스템 설정
+      - 사이트 설정 (로고, 제목, 설명 등)
+      - 이메일 설정
+      - 보안 설정 (비밀번호 정책, 2단계 인증 설정 등)
+    - 로그 관리
+      - 시스템 로그 조회
+      - 활동 로그 조회
+    - 파일 관리
+      - 업로드된 파일 관리
+      - 파일 삭제
 
 
 ## 환경 설정
@@ -16,6 +61,7 @@ fastapi boilerplate
 
 ### env 파일 예시
 
+```
 .
 ├── Dockerfile
 ├── ...
@@ -24,6 +70,7 @@ fastapi boilerplate
 │   ├── dev.env
 │   └── prod.env
 └── ...
+```
 
 `base.env` 
 
@@ -38,12 +85,19 @@ ENV_STATE=dev
 APP_ENV=dev
 DEBUG=True
 ALLOWED_ORIGINS=*
+SECRET_KEY=secret-key
+ALGORITHM=jwt-algorithm # HS256, HS512, ...
+
+# admin
+ADMIN_ID=boilerplate_user
+ADMIN_PASSWORD=boilerplate
+
 # postgresql
-POSTGRES_USER=template_user
-POSTGRES_PASSWORD=template
-POSTGRES_HOST=db
+POSTGRES_USER=boilerplate_user
+POSTGRES_PASSWORD=boilerplate
+POSTGRES_HOST=postgresql-db
 POSTGRES_PORT=5432
-POSTGRES_DB=template-dev-db
+POSTGRES_DB=boilerplate-dev-db
 
 # redis
 REDIS_HOST=redis
@@ -57,13 +111,19 @@ REDIS_DATABASE=0
 APP_ENV=prod
 DEBUG=False
 ALLOWED_ORIGINS=http://localhost:8000,http://localhost:3000
+SECRET_KEY=secret-key # HS256, HS512, ...
+ALGORITHM=jwt-algorithm
+
+# admin
+ADMIN_ID=boilerplate_user
+ADMIN_PASSWORD=boilerplate
 
 # postgresql
-POSTGRES_USER=template_user
-POSTGRES_PASSWORD=template
-POSTGRES_HOST=db
+POSTGRES_USER=boilerplate_user
+POSTGRES_PASSWORD=boilerplate
+POSTGRES_HOST=postgresql-db
 POSTGRES_PORT=5432
-POSTGRES_DB=template-prod-db
+POSTGRES_DB=boilerplate-prod-db
 
 # redis
 REDIS_HOST=redis

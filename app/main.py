@@ -77,7 +77,7 @@ async def postgresql_health_check(db: Session = Depends(get_db)):
 
 
 @app.get("/redis-health-check")
-async def redis_health_check(redis: Redis = Depends(get_redis)):
+def redis_health_check(redis: Redis = Depends(get_redis)):
     redis.set("redis_health_check", "Ok")
     value = redis.get("redis_health_check")
     return {"redis_health_check": f"redis-server is {value}"}
