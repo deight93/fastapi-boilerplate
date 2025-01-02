@@ -22,6 +22,14 @@ python-jose = "^3.3.0"
 itsdangerous = "^2.2.0"
 pytest-cov = "^6.0.0"
 
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "F",  # pyflakes
+    "I",  # isort
+]
 
 [build-system]
 requires = ["poetry-core"]
