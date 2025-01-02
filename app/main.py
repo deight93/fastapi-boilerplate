@@ -14,6 +14,7 @@ from app.core.database import engine
 from app.core.dependency import get_db, get_redis
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
+from app.routers import user
 
 
 @asynccontextmanager
@@ -34,6 +35,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(user.router)
 
 admin = Admin(app, engine, authentication_backend=authentication_admin)
 admin.add_view(UsersAdmin)
