@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   app:
     container_name: api-server
@@ -25,7 +23,7 @@ services:
     env_file:
       - env/dev.env
     ports:
-      - "5434:5432"
+      - "5432:5432"
     networks:
       - fastapi-boilerplate-network
 
