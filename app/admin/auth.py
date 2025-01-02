@@ -49,7 +49,7 @@ class AdminAuth(AuthenticationBackend):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="JWTError",
-            )
+            ) from JWTError
 
         expire = payload.get("exp")
         if not expire or (int(expire) < datetime.utcnow().timestamp()):

@@ -3,17 +3,18 @@ from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import Session
-from sqlalchemy import select
-from sqladmin import Admin
 from redis import Redis
+from sqladmin import Admin
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.admin.auth import authentication_admin
 from app.admin.views import UsersAdmin
 from app.core.database import engine
-from app.core.dependency import get_redis, get_db
+from app.core.dependency import get_db, get_redis
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
+from app.routers import user
 
 
 @asynccontextmanager
@@ -34,6 +35,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(user.router)
 
 admin = Admin(app, engine, authentication_backend=authentication_admin)
 admin.add_view(UsersAdmin)

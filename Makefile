@@ -20,7 +20,7 @@ api-restart:
 	docker restart app
 
 code-beauty:
-	ruff check --fix .
+	ruff check --fix . && ruff format
 
 api-log:
 	docker-compose logs -f app
@@ -36,3 +36,6 @@ db-upgrade:
 
 poetry-show:
 	docker-compose exec app poetry show
+
+pre-commit:
+	pre-commit run --all-files

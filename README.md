@@ -8,12 +8,9 @@ fastapi boilerplate
   - 회원
     - 회원 가입
     - 로그인/로그아웃
-    - 비밀번호 재설정
-    - 프로필 관리
+    - 회원 정보 확인
+    - 회원 정보 수정
     - 회원 탈퇴
-    - 이메일 알림
-    - 2단계 인증(2FA)
-    - 활동 로그
   - 게시판
     - 게시판 목록
     - 게시글 작성
@@ -72,14 +69,14 @@ fastapi boilerplate
 └── ...
 ```
 
-`base.env` 
+`base.env`
 
 ```plaintext
 # dev, prod
 ENV_STATE=dev
 ```
 
-`dev.env` 
+`dev.env`
 
 ```plaintext
 APP_ENV=dev
@@ -105,7 +102,7 @@ REDIS_PORT=6379
 REDIS_DATABASE=0
 ```
 
-`prod.env` 
+`prod.env`
 
 ```plaintext
 APP_ENV=prod
