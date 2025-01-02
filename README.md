@@ -86,7 +86,7 @@ APP_ENV=dev
 DEBUG=True
 ALLOWED_ORIGINS=*
 SECRET_KEY=secret-key
-ALGORITHM=jwt-algorithm
+ALGORITHM=jwt-algorithm # HS256, HS512, ...
 
 # admin
 ADMIN_ID=boilerplate_user
@@ -95,7 +95,7 @@ ADMIN_PASSWORD=boilerplate
 # postgresql
 POSTGRES_USER=boilerplate_user
 POSTGRES_PASSWORD=boilerplate
-POSTGRES_HOST=db
+POSTGRES_HOST=postgresql-db
 POSTGRES_PORT=5432
 POSTGRES_DB=boilerplate-dev-db
 
@@ -111,7 +111,7 @@ REDIS_DATABASE=0
 APP_ENV=prod
 DEBUG=False
 ALLOWED_ORIGINS=http://localhost:8000,http://localhost:3000
-SECRET_KEY=secret-key
+SECRET_KEY=secret-key # HS256, HS512, ...
 ALGORITHM=jwt-algorithm
 
 # admin
@@ -121,7 +121,7 @@ ADMIN_PASSWORD=boilerplate
 # postgresql
 POSTGRES_USER=boilerplate_user
 POSTGRES_PASSWORD=boilerplate
-POSTGRES_HOST=db
+POSTGRES_HOST=postgresql-db
 POSTGRES_PORT=5432
 POSTGRES_DB=boilerplate-prod-db
 
