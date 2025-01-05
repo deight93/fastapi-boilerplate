@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
+from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
-from sqlalchemy import select, or_
 
 from app.core.security import get_password_hash
 from app.models.users import Users
@@ -9,7 +9,9 @@ from app.schemas.request.users import UserRegister
 
 def create_user(db: Session, user: UserRegister):
     # 유저 중복 체크
-    stmt = select(Users).where(or_(Users.user_id == user.user_id, Users.email == user.email))
+    stmt = select(Users).where(
+        or_(Users.user_id == user.user_id, Users.email == user.email)
+    )
     existing_user = db.execute(stmt).scalars().first()
 
     if existing_user:
@@ -30,4 +32,3 @@ def create_user(db: Session, user: UserRegister):
     db.refresh(db_user)
 
     return db_user
-

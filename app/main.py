@@ -14,7 +14,7 @@ from app.core.database import engine
 from app.core.dependency import get_db, get_redis
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
-from app.routers import users, auth
+from app.routers import auth, users
 
 
 @asynccontextmanager

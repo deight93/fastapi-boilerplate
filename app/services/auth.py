@@ -1,11 +1,11 @@
 from datetime import timedelta
 
 from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
-from sqlalchemy import select, or_
 from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-from app.core.security import verify_password, create_access_token
+from app.core.security import create_access_token, verify_password
 from app.models.users import Users
 
 
@@ -20,11 +20,13 @@ def login_user(db: Session, form_data: OAuth2PasswordRequestForm) -> dict:
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token = create_access_token(subject=user.id, expires_delta=timedelta(minutes=30))
+    access_token = create_access_token(
+        subject=user.id, expires_delta=timedelta(minutes=30)
+    )
     tokens = {
-        "access_token" : access_token,
-        "token_type" : "bearer",
-        "expires_in": 60 * 30
+        "access_token": access_token,
+        "token_type": "bearer",
+        "expires_in": 60 * 30,
     }
 
     return tokens

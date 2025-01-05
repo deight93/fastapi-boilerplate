@@ -1,16 +1,17 @@
 from typing import Annotated
 
-from sqlalchemy.exc import SQLAlchemyError
-from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
-from jose import jwt, JWTError
 
-from app.models.users import Users
-from app.core.setting import settings
 from app.core.database import SessionLocal, redis_config
+from app.core.setting import settings
+from app.models.users import Users
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
 
 def get_db():
     db = SessionLocal()
@@ -25,11 +26,14 @@ def get_db():
     finally:
         db.close()
 
+
 def get_redis():
     return redis_config
 
+
 SessionDep = Annotated[Session, Depends(get_db)]
 TokenDep = Annotated[str, Depends(oauth2_scheme)]
+
 
 def get_current_user(session: SessionDep, token: TokenDep) -> Users:
     try:
