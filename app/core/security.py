@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any
 
 from jose import jwt
 from passlib.context import CryptContext
@@ -9,13 +8,26 @@ from app.core.setting import settings
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def create_access_token(subject: str | Any, expires_delta: timedelta) -> str:
-    expire = datetime.now(timezone.utc) + expires_delta
+def create_token(
+    subject: str | int, expire_minutes: int, role: str | None = None
+) -> str:
+    expire = datetime.now(timezone.utc) + timedelta(minutes=expire_minutes)
     to_encode = {"exp": expire, "sub": str(subject)}
+    if role:
+        to_encode.update(role=role)
     encoded_jwt = jwt.encode(
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )
     return encoded_jwt
+
+def decode_token(token: str):
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return None
+    except jwt.JWTError:
+        return None
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:

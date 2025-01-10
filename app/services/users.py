@@ -8,7 +8,6 @@ from app.schemas.request.users import UserRegister
 
 
 def create_user(db: Session, user: UserRegister):
-    # 유저 중복 체크
     stmt = select(Users).where(
         or_(Users.user_id == user.user_id, Users.email == user.email)
     )

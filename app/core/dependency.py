@@ -1,5 +1,3 @@
-from typing import Annotated
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -31,11 +29,9 @@ def get_redis():
     return redis_config
 
 
-SessionDep = Annotated[Session, Depends(get_db)]
-TokenDep = Annotated[str, Depends(oauth2_scheme)]
-
-
-def get_current_user(session: SessionDep, token: TokenDep) -> Users:
+def get_current_user(
+    session: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
+) -> Users:
     try:
         print(token)
         payload = jwt.decode(
