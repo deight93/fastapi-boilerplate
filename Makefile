@@ -1,14 +1,14 @@
 service-build:
-	docker-compose build
+	docker compose build
 
 service-up:
-	docker-compose up -d
+	docker compose up -d
 
 service-down:
-	docker-compose down
+	docker compose down
 
 service-clean:
-	docker-compose down -v
+	docker compose down -v
 
 api-up:
 	docker start app
@@ -23,19 +23,19 @@ code-beauty:
 	ruff check --fix . && ruff format
 
 api-log:
-	docker-compose logs -f app
+	docker compose logs -f app
 
 api-test:
-	docker-compose exec app pytest --cov-report term-missing --cov --ignore temp
+	docker compose exec app pytest --cov-report term-missing --cov --ignore temp
 
 db-migrate:
-	docker-compose exec app alembic revision --autogenerate -m "${MSG}"
+	docker compose exec app alembic revision --autogenerate -m "${MSG}"
 
 db-upgrade:
-	docker-compose exec app alembic upgrade head
+	docker compose exec app alembic upgrade head
 
 poetry-show:
-	docker-compose exec app poetry show
+	docker compose exec app poetry show
 
 pre-commit:
 	pre-commit run --all-files
