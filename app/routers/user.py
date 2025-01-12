@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.dependency import get_current_user, get_db
-from app.schemas.request.users import UserRegister
-from app.schemas.response.users import GetUserMe, PostUserRegister
-from app.services.users import create_user
+from app.schemas.request.user import UserRegister
+from app.schemas.response.user import GetUserMe, PostUserRegister
+from app.services.user import create_user
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/user", tags=["user"])
 
 
 @router.post("/register", response_model=PostUserRegister, summary="✅ 회원가입")

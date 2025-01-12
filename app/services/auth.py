@@ -6,11 +6,11 @@ from sqlalchemy.orm import Session
 
 from app.core.security import create_token, verify_password
 from app.core.setting import settings
-from app.models.users import Users
+from app.models.user import User
 
 
 def login_user(db: Session, form_data: OAuth2PasswordRequestForm) -> dict:
-    stmt = select(Users).where(Users.user_id == form_data.username)
+    stmt = select(User).where(User.user_id == form_data.username)
     user = db.execute(stmt).scalars().first()
 
     if not user or not verify_password(form_data.password, user.hashed_password):
@@ -47,7 +47,7 @@ def refresh_tokens(refresh_token: str, db: Session):
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
         )
     id: str = payload.get("sub")
-    stmt = select(Users).where(Users.id == id)
+    stmt = select(User).where(User.id == id)
     user = db.execute(stmt).scalars().first()
     if not user:
         raise HTTPException(

@@ -3,13 +3,13 @@ from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash
-from app.models.users import Users
-from app.schemas.request.users import UserRegister
+from app.models.user import User
+from app.schemas.request.user import UserRegister
 
 
 def create_user(db: Session, user: UserRegister):
-    stmt = select(Users).where(
-        or_(Users.user_id == user.user_id, Users.email == user.email)
+    stmt = select(User).where(
+        or_(User.user_id == user.user_id, User.email == user.email)
     )
     existing_user = db.execute(stmt).scalars().first()
 
@@ -19,7 +19,7 @@ def create_user(db: Session, user: UserRegister):
             detail="Username or email already exists.",
         )
 
-    db_user = Users(
+    db_user = User(
         user_id=user.user_id,
         name=user.name,
         email=user.email,

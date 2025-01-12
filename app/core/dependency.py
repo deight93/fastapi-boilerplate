@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.database import SessionLocal, redis_config
 from app.core.setting import settings
 from app.models.admin import Admin
-from app.models.users import Users
+from app.models.user import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -32,7 +32,7 @@ def get_redis():
 
 def get_current_user(
     session: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
-) -> Users:
+) -> User:
     try:
         payload = jwt.decode(
             token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
@@ -43,7 +43,7 @@ def get_current_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    user = session.get(Users, payload.get("sub"))
+    user = session.get(User, payload.get("sub"))
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     if not user.is_active:
