@@ -72,6 +72,8 @@ DEBUG=True
 ALLOWED_ORIGINS=*
 SECRET_KEY=secret-key
 ALGORITHM=jwt-algorithm # HS256, HS512, ...
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_MINUTES=60
 
 # admin
 ADMIN_ID=boilerplate_user
@@ -85,7 +87,7 @@ POSTGRES_PORT=5432
 POSTGRES_DB=boilerplate-dev-db
 
 # redis
-REDIS_HOST=redis
+REDIS_HOST=redis-db
 REDIS_PORT=6379
 REDIS_DATABASE=0
 ```
@@ -98,6 +100,8 @@ DEBUG=False
 ALLOWED_ORIGINS=http://localhost:8000,http://localhost:3000
 SECRET_KEY=secret-key # HS256, HS512, ...
 ALGORITHM=jwt-algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_MINUTES=60
 
 # admin
 ADMIN_ID=boilerplate_user
@@ -111,7 +115,7 @@ POSTGRES_PORT=5432
 POSTGRES_DB=boilerplate-prod-db
 
 # redis
-REDIS_HOST=redis
+REDIS_HOST=redis-db
 REDIS_PORT=6379
 REDIS_DATABASE=0
 ```
