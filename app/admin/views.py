@@ -1,13 +1,13 @@
 from sqladmin import ModelView
 
-from app.models.users import Users
+from app.models.user import User
 
 
-class UsersAdmin(ModelView, model=Users):
-    name = "Users"
+class UserAdmin(ModelView, model=User):
+    name = "User"
     name_plural = "User"
     icon = "fa-solid fa-book"
     can_create = False
     can_delete = False
     can_edit = False
-    column_list = [c.name for c in Users.__table__.c]
+    column_list = [c.name for c in User.__table__.c]

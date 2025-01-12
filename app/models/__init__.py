@@ -1,4 +1,4 @@
 from .base import Timestamp
-from .users import Users
+from .user import User
 
-__all__ = ["Timestamp", "Users"]
+__all__ = ["Timestamp", "User"]
