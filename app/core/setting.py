@@ -7,6 +7,8 @@ class EnvSettings(BaseSettings):
     DEBUG: bool
     ALLOWED_ORIGINS: str
     SECRET_KEY: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    REFRESH_TOKEN_EXPIRE_MINUTES: int
     ADMIN_ID: str
     ADMIN_PASSWORD: str
     ALGORITHM: str

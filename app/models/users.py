@@ -1,5 +1,4 @@
 from sqlalchemy import Boolean, Column, Integer, String
-from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 from app.models.base import Timestamp
@@ -15,5 +14,3 @@ class Users(Timestamp, Base):
     email = Column(String(256), nullable=False, comment="이메일")
     hashed_password = Column(String(256), nullable=False, comment="해시된 비밀번호")
     is_active = Column(Boolean, default=True, comment="탈퇴여부")
-
-    posts = relationship("Post", back_populates="owner", cascade="all, delete-orphan")
