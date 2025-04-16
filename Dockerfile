@@ -1,25 +1,28 @@
-FROM python:3.11.8-slim
+FROM python:3.11-slim
 
-# Set a working directory
-WORKDIR /usr/src/app
+ENV PYTHONUNBUFFERED=1
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
-# Install Poetry
-RUN pip install --upgrade pip \
-    && pip install poetry
+ENV UV_COMPILE_BYTE=1
 
-# Copy only the necessary files for installing dependencies
-COPY pyproject.toml poetry.lock ./
+ENV UV_LINK_MODE=copy
+
+# Change the working directory to the `app` directory
+WORKDIR /app
+
+ENV PATH="/app/.venv/bin:$PATH"
+
+COPY . /app/
 
 # Install dependencies
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
 
-# Copy the application files
-COPY . .
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
-# Command to run the application can be added here, for example:
-# CMD ["python", "app.py"]
+#CMD ["fastapi", "dev", "app/main.py", "--host", "0.0.0.0"]

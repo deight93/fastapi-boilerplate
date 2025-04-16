@@ -1,10 +1,13 @@
 services:
   app:
     container_name: api-server
-    build: .
-    command: bash -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "alembic upgrade head && fastapi dev app/main.py --host 0.0.0.0 --port 8000"
+    working_dir: /app
     volumes:
-      - ./:/usr/src/app
+      - ./app:/app/app
     ports:
       - "8000:8000"
     depends_on:
