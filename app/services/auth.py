@@ -40,7 +40,7 @@ def login_user(db: Session, form_data: OAuth2PasswordRequestForm) -> dict:
 def refresh_tokens(refresh_token: str, db: Session):
     try:
         payload = jwt.decode(
-            refresh_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            refresh_token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
     except JWTError:
         raise HTTPException(

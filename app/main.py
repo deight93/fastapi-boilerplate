@@ -1,24 +1,29 @@
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from httpx import AsyncClient
 from sqladmin import Admin
 
 from app.admin.auth import authentication_admin
 from app.admin.views import UserAdmin
 from app.core.database import engine
+from app.core.logger import logging
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
 from app.routers import auth, user
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
-    print(f"INFO:     Hello, Run the server in the {settings.APP_ENV} environment 👋")
+async def lifespan(app: FastAPI) -> AsyncIterator[dict[str, AsyncClient]]:
+    logging.info(
+        f"INFO:     Hello, Run the server in the {settings.ENV_STATE} environment 👋"
+    )
     yield
-    print(
-        f"INFO:     Bye, Shut down the server in the {settings.APP_ENV} environment 👋"
+    logging.info(
+        f"INFO:     Bye, Shut down the server in the {settings.ENV_STATE} environment 👋"
     )
 
 
@@ -40,9 +45,7 @@ admin.add_view(UserAdmin)
 
 
 @app.get("/file-logging-test")
-def file_logging_test():
-    from app.core.logger import logging
-
+async def file_logging_test():
     logger = logging.getLogger(__name__)
     logger.info("logging test ...")
 
@@ -50,15 +53,12 @@ def file_logging_test():
 
 
 @app.get("/api-health-check")
-def api_health_check():
-    from app.core.logger import logging
-
-    logger = logging.getLogger(__name__)
-    logger.error("Redis client is not initialized.")
-
+async def api_health_check():
     return {
         "api_health_check": "api-server is Ok",
         "debug-mode": settings.DEBUG,
+        "setting": settings,
     }
+
 
 app.mount("/static", StaticFiles(directory="app/core/static"), name="static")
