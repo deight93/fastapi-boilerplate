@@ -13,7 +13,7 @@ WORKDIR /app
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-COPY . /app/
+COPY . .
 
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \

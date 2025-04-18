@@ -14,7 +14,7 @@ services:
       - postgresql-db
       - redis-db
     env_file:
-      - env/base.env
+      - .env
     networks:
       - fastapi-boilerplate-network
 
@@ -24,7 +24,7 @@ services:
     volumes:
       - postgresql-data:/var/lib/postgresql/data/
     env_file:
-      - env/dev.env
+      - .env
     ports:
       - "5432:5432"
     networks:
@@ -34,7 +34,7 @@ services:
     container_name: redis-db
     image: redis:6.0-alpine
     env_file:
-      - env/dev.env
+      - .env
     ports:
       - "6379:6379"
     networks:
