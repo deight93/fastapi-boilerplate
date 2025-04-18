@@ -35,7 +35,7 @@ def get_current_user(
 ) -> User:
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
     except JWTError as e:
         print(f"JWTError: {e}")
@@ -56,7 +56,7 @@ def get_current_admin(
 ) -> Admin:
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
     except JWTError as e:
         print(f"JWTError: {e}")

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from jose import jwt
 from passlib.context import CryptContext
@@ -11,12 +11,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def create_token(
     subject: str | int, expire_minutes: int, role: str | None = None
 ) -> str:
-    expire = datetime.now(timezone.utc) + timedelta(minutes=expire_minutes)
+    expire = datetime.now(UTC) + timedelta(minutes=expire_minutes)
     to_encode = {"exp": expire, "sub": str(subject)}
     if role:
         to_encode.update(role=role)
     encoded_jwt = jwt.encode(
-        to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
+        to_encode, settings.JWT_SECRET_KEY, algorithm=settings.ALGORITHM
     )
     return encoded_jwt
 
@@ -24,7 +24,7 @@ def create_token(
 def decode_token(token: str):
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
         return payload
     except jwt.ExpiredSignatureError:

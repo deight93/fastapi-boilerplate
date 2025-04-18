@@ -18,7 +18,7 @@ class AdminAuth(AuthenticationBackend):
             expire = datetime.now() + timedelta(days=1)
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
-            to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
+            to_encode, settings.JWT_SECRET_KEY, algorithm=settings.ALGORITHM
         )
         return encoded_jwt
 
@@ -43,7 +43,7 @@ class AdminAuth(AuthenticationBackend):
             return False
         try:
             payload = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+                token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
             )
         except JWTError:
             raise HTTPException(
@@ -59,12 +59,7 @@ class AdminAuth(AuthenticationBackend):
             )
 
         user_id = payload.get("sub")
-        if not user_id:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="token expiration",
-            )
-        elif user_id != settings.ADMIN_ID:
+        if not user_id or user_id != settings.ADMIN_ID:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="token expiration",
@@ -72,4 +67,4 @@ class AdminAuth(AuthenticationBackend):
         return True
 
 
-authentication_admin = AdminAuth(secret_key=settings.SECRET_KEY)
+authentication_admin = AdminAuth(secret_key=settings.JWT_SECRET_KEY)
