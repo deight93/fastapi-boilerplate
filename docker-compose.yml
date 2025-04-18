@@ -11,8 +11,10 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - postgresql-db
-      - redis-db
+      postgresql-db:
+        condition: service_healthy
+      redis-db:
+        condition: service_healthy
     env_file:
       - .env
     networks:
@@ -29,16 +31,29 @@ services:
       - "5432:5432"
     networks:
       - fastapi-boilerplate-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
 
   redis-db:
     container_name: redis-db
     image: redis:6.0-alpine
     env_file:
       - .env
+    restart: always
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
     ports:
       - "6379:6379"
     networks:
       - fastapi-boilerplate-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
 volumes:
   postgresql-data:

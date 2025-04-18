@@ -7,115 +7,63 @@ fastapi boilerplate
 - 기본기능
   - 회원
     - ~~회원 가입~~
-    - 로그인/로그아웃
-    - 회원 정보 확인
-    - 회원 정보 수정
-    - 회원 탈퇴
-  - 게시판
-    - 게시판 목록
-    - 게시글 작성
-    - 게시글 수정
-    - 게시글 상세
-    - 게시글 삭제
-    - 파일 업로드
-    - 파일 다운로드
-  - 관리자페이지
-    - 회원 관리
-      - 회원 목록 조회
-      - 회원 정보 수정
-      - 회원 삭제
-      - 회원 권한 설정
-    - 게시판 관리
-      - 게시판 생성 및 수정
-      - 게시글 관리 (수정, 삭제)
-      - 게시글 신고 처리
-    - 권한 관리
-      - 관리자 계정 생성 및 수정
-      - 관리자 권한 설정
-    - 로그 관리
-      - 시스템 로그 조회
-      - 활동 로그 조회
-    - 파일 관리
-      - 업로드된 파일 관리
-      - 파일 삭제
+    - 로그인 사용자 정보(내 정보)
+  - 인증
+    - 로그인
+    - 로그아웃
+    - 토큰갱신
 
 
 ## 환경 설정
 
-이 프로젝트는 환경 변수를 사용하여 설정을 관리합니다. 환경 변수를 설정하려면 프로젝트 루트 디렉토리의 env디렉토리에 `base.env`, `dev.env`, `prod.env` 파일을 생성하고 필요한 변수를 정의해야 합니다.
+이 프로젝트는 환경 변수를 사용하여 설정을 관리합니다. 
+환경 변수를 설정하려면 프로젝트 루트 디렉토리에 `.env` 파일을 생성하고 필요한 변수를 정의해야 합니다.
 
 ### env 파일 예시
-
 ```
 .
 ├── Dockerfile
-├── ...
-├── env
-│   ├── base.env
-│   ├── dev.env
-│   └── prod.env
+├── .env
 └── ...
 ```
 
-`base.env`
+`.env`
 
 ```plaintext
-# dev, prod
+# 공통 설정
 ENV_STATE=dev
-```
-
-`dev.env`
-
-```plaintext
-APP_ENV=dev
-DEBUG=True
-ALLOWED_ORIGINS=*
-SECRET_KEY=secret-key
-ALGORITHM=jwt-algorithm # HS256, HS512, ...
+JWT_SECRET_KEY=jwt-secret-key
+JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 REFRESH_TOKEN_EXPIRE_MINUTES=60
 
-# admin
-ADMIN_ID=boilerplate_user
-ADMIN_PASSWORD=boilerplate
+# 공통 admin 설정
+ADMIN_ID=admin
+ADMIN_PASSWORD=admin
 
-# postgresql
-POSTGRES_USER=boilerplate_user
-POSTGRES_PASSWORD=boilerplate
-POSTGRES_HOST=postgresql-db
-POSTGRES_PORT=5432
-POSTGRES_DB=boilerplate-dev-db
-
-# redis
+# 공통 Redis 설정
 REDIS_HOST=redis-db
 REDIS_PORT=6379
 REDIS_DATABASE=0
-```
 
-`prod.env`
-
-```plaintext
-APP_ENV=prod
-DEBUG=False
-ALLOWED_ORIGINS=http://localhost:8000,http://localhost:3000
-SECRET_KEY=secret-key # HS256, HS512, ...
-ALGORITHM=jwt-algorithm
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-REFRESH_TOKEN_EXPIRE_MINUTES=60
-
-# admin
-ADMIN_ID=boilerplate_user
-ADMIN_PASSWORD=boilerplate
-
-# postgresql
-POSTGRES_USER=boilerplate_user
-POSTGRES_PASSWORD=boilerplate
+# 공통 Postgresql 설정
 POSTGRES_HOST=postgresql-db
 POSTGRES_PORT=5432
-POSTGRES_DB=boilerplate-prod-db
 
-# redis
-REDIS_HOST=redis-db
-REDIS_PORT=6379
-REDIS_DATABASE=0
+# prod, dev별 설정
+# dev 설정
+DEV_DEBUG=True
+DEV_ALLOWED_ORIGINS=*
+DEV_POSTGRES_USER=boilerplate_user
+DEV_POSTGRES_PASSWORD=boilerplate
+DEV_POSTGRES_DB=boilerplate-dev-db
+DEV_REDIS_PASSWORD=dev-redis-password
+
+# prod 설정
+PROD_DEBUG=False
+PROD_ALLOWED_ORIGINS=http://localhost:8000,http://localhost:3000
+PROD_POSTGRES_USER=boilerplate_user
+PROD_POSTGRES_PASSWORD=boilerplate
+PROD_POSTGRES_DB=boilerplate-prod-db
+PROD_REDIS_PASSWORD=prod-redis-password
 ```

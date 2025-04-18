@@ -9,7 +9,8 @@ if not os.path.exists(LOG_DIR):
 LOG_FILE_PATH = os.path.join(LOG_DIR, "app.log")
 
 LOGGING_LEVEL = logging.INFO
-LOGGING_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+LOGGING_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 logging.basicConfig(level=LOGGING_LEVEL, format=LOGGING_FORMAT)
 

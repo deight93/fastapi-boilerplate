@@ -5,7 +5,6 @@ ENV PYTHONUNBUFFERED=1
 COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
 ENV UV_COMPILE_BYTE=1
-
 ENV UV_LINK_MODE=copy
 
 # Change the working directory to the `app` directory

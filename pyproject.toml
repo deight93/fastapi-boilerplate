@@ -37,7 +37,7 @@ warn_required_dynamic_aliases = true # 동적 alias가 필수 필드에 사용�
 
 [tool.ruff]
 target-version = "py311"
-exclude = ["venv", ".venv", "migration"] # Ruff 검사에서 제외할 디렉토리
+exclude = ["venv", ".venv", "migrations"] # Ruff 검사에서 제외할 디렉토리
 line-length = 88
 indent-width = 4
 
