@@ -53,16 +53,16 @@ jobs:
 
           #  테스트 공통 Redis 설정
           REDIS_HOST: redis-db
-          REDIS_PORT: 6379
-          REDIS_DATABASE: 0
+          REDIS_PORT: "6379"
+          REDIS_DATABASE: "0"
 
           # 공통 Postgresql 설정
           POSTGRES_HOST: postgresql-db
-          POSTGRES_PORT: 5432
+          POSTGRES_PORT: "5432"
 
           # 테스트 설정
-          DEBUG: True
-          ALLOWED_ORIGINS: *
+          DEBUG: "True"
+          ALLOWED_ORIGINS: "*"
           POSTGRES_USER: boilerplate_user
           POSTGRES_PASSWORD: boilerplate
           POSTGRES_DB: boilerplate-dev-db
