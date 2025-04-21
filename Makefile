@@ -54,7 +54,7 @@ api-restart:
 	docker restart app
 
 code-beauty:
-	ruff check --fix . && ruff format
+	uv run ruff check --fix . && uv run ruff format --check .
 
 api-log:
 	docker compose logs -f app
@@ -72,4 +72,4 @@ poetry-show:
 	docker compose exec app poetry show
 
 pre-commit:
-	pre-commit run --all-files
+	uv run pre-commit run --all-files

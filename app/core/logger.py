@@ -5,7 +5,7 @@ from pathlib import Path
 LOG_DIR = Path(__file__).parent.parent
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-LOG_FILE_PATH = LOG_DIR / "app.log"
+LOG_FILE_PATH = LOG_DIR / "logs" / "app.log"
 
 LOGGING_LEVEL = logging.INFO
 LOGGING_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
