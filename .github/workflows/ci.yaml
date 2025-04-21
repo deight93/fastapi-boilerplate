@@ -40,5 +40,31 @@ jobs:
 
       - name: Test with pytest
         env:
+          # 테스트 설정
           ENV_STATE: dev
+          JWT_SECRET_KEY: jwt-secret-key
+          JWT_ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 30
+          REFRESH_TOKEN_EXPIRE_MINUTES: 60
+
+          # 테스트 공통 admin 설정
+          ADMIN_ID: admin
+          ADMIN_PASSWORD: admin
+
+          #  테스트 공통 Redis 설정
+          REDIS_HOST: redis-db
+          REDIS_PORT: 6379
+          REDIS_DATABASE: 0
+
+          # 공통 Postgresql 설정
+          POSTGRES_HOST: postgresql-db
+          POSTGRES_PORT: 5432
+
+          # 테스트 설정
+          DEBUG: True
+          ALLOWED_ORIGINS: *
+          POSTGRES_USER: boilerplate_user
+          POSTGRES_PASSWORD: boilerplate
+          POSTGRES_DB: boilerplate-dev-db
+          REDIS_PASSWORD: dev-redis-password
         run: uv run pytest
