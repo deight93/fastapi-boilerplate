@@ -80,6 +80,10 @@ line-ending = "auto" # 운영체제에 맞는 라인 엔딩 자동 감지 및 �
 # Pydantic 등 런타임 타입 정보가 중요한 라이브러리에 필수적
 keep-runtime-typing = true
 
+[tool.pytest.ini_options]
+asyncio_mode = "strict" # pytest-asyncio의 작동 모드를 지정
+asyncio_default_fixture_loop_scope = "function" # 비동기 fixture가 어떤 스코프의 event loop에 연결될지
+
 [tool.setuptools]
 packages = ["app"]
 

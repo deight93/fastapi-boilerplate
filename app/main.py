@@ -57,7 +57,6 @@ async def api_health_check():
     return {
         "api_health_check": "api-server is Ok",
         "debug-mode": settings.DEBUG,
-        "setting": settings,
     }
 
 
