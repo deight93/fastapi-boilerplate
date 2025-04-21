@@ -1,0 +1,70 @@
+# .github/workflows/ci.yaml
+name: CI
+
+on: [ push, pull_request ] # 언제 실행할지 정의 (push 또는 PR 시)
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest # 실행 환경
+    strategy:
+      matrix:
+        python-version: [ "3.12.9" ] # 테스트할 Python 버전들
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH # uv 경로 추가
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Create virtual environment
+        run: uv venv
+
+      - name: Activate virtual environment
+        run: echo "$PWD/.venv/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies using uv
+        run: uv pip install .[dev]
+
+      - name: Lint with ruff
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: Test with pytest
+        env:
+          # 테스트 설정
+          ENV_STATE: dev
+          JWT_SECRET_KEY: jwt-secret-key
+          JWT_ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 30
+          REFRESH_TOKEN_EXPIRE_MINUTES: 60
+
+          # 테스트 공통 admin 설정
+          ADMIN_ID: admin
+          ADMIN_PASSWORD: admin
+
+          #  테스트 공통 Redis 설정
+          REDIS_HOST: redis-db
+          REDIS_PORT: "6379"
+          REDIS_DATABASE: "0"
+
+          # 공통 Postgresql 설정
+          POSTGRES_HOST: postgresql-db
+          POSTGRES_PORT: "5432"
+
+          # 테스트 설정
+          DEBUG: "True"
+          ALLOWED_ORIGINS: "*"
+          POSTGRES_USER: boilerplate_user
+          POSTGRES_PASSWORD: boilerplate
+          POSTGRES_DB: boilerplate-dev-db
+          REDIS_PASSWORD: dev-redis-password
+        run: uv run pytest

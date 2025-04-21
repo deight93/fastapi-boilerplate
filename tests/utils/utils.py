@@ -1,11 +1,9 @@
-from typing import Dict
-
 from fastapi.testclient import TestClient
 
 from app.core.setting import settings
 
 
-def get_admin_token_headers(client: TestClient) -> Dict[str, str]:
+def get_admin_token_headers(client: TestClient) -> dict[str, str]:
     login_data = {"username": settings.ADMIN_ID, "password": settings.ADMIN_PASSWORD}
     response = client.post("/auth/login", data=login_data)
     tokens = response.json()

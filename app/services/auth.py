@@ -12,7 +12,6 @@ from app.models.user import User
 def login_user(db: Session, form_data: OAuth2PasswordRequestForm) -> dict:
     stmt = select(User).where(User.user_id == form_data.username)
     user = db.execute(stmt).scalars().first()
-
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -40,14 +39,14 @@ def login_user(db: Session, form_data: OAuth2PasswordRequestForm) -> dict:
 def refresh_tokens(refresh_token: str, db: Session):
     try:
         payload = jwt.decode(
-            refresh_token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            refresh_token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
         )
-    id: str = payload.get("sub")
-    stmt = select(User).where(User.id == id)
+    user_id: str = payload.get("sub")
+    stmt = select(User).where(User.id == user_id)
     user = db.execute(stmt).scalars().first()
     if not user:
         raise HTTPException(

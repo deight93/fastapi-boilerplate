@@ -19,10 +19,13 @@ Base = declarative_base()
 REDIS_HOST = settings.REDIS_HOST
 REDIS_PORT = settings.REDIS_PORT
 REDIS_DATABASE = settings.REDIS_DATABASE
+REDIS_PASSWORD = settings.REDIS_PASSWORD
+
 redis_config = Redis(
     host=REDIS_HOST,
     port=REDIS_PORT,
     db=REDIS_DATABASE,
+    password=REDIS_PASSWORD,
     encoding="UTF-8",
     decode_responses=True,
 )

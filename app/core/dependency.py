@@ -5,6 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.core.database import SessionLocal, redis_config
+from app.core.logger import logging
 from app.core.setting import settings
 from app.models.admin import Admin
 from app.models.user import User
@@ -32,13 +33,13 @@ def get_redis():
 
 def get_current_user(
     session: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
-) -> User:
+) -> type[User]:
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
     except JWTError as e:
-        print(f"JWTError: {e}")
+        logging.error(f"JWTError: {e}")
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
@@ -53,13 +54,13 @@ def get_current_user(
 
 def get_current_admin(
     session: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
-) -> Admin:
+) -> type[Admin]:
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
         )
     except JWTError as e:
-        print(f"JWTError: {e}")
+        logging.error(f"JWTError: {e}")
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",

@@ -14,7 +14,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post(
     "/login",
     response_model=PostAuthLogin,
-    summary="✅ 통합 로그인",
+    summary="✅ 로그인",
 )
 def post_login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
