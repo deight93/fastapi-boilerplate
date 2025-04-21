@@ -34,7 +34,7 @@ class EnvSettings(BaseSettings):
     model_config = SettingsConfigDict(extra="ignore", env_file_encoding="utf-8")
 
     @field_validator("ALLOWED_ORIGINS")
-    def parsing_allowed_origins(cls, value):
+    def parsing_allowed_origins(cls, value):  # noqa: N805
         if isinstance(value, str):
             return [i.strip() for i in value.split(",")]
         return value

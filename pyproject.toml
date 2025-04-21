@@ -15,7 +15,8 @@ dependencies = [
     "sqladmin >= 0.18.0",
     "python-jose >= 3.3.0",
     "itsdangerous >= 2.2.0",
-    "passlib >= 1.7.4"
+    "passlib >= 1.7.4",
+    "pathlib>=1.0.1",
 ]
 
 [dependency-groups]

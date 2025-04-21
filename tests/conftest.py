@@ -1,4 +1,4 @@
-from typing import Dict, Generator
+from collections.abc import Generator
 
 import pytest
 from fastapi.testclient import TestClient
@@ -20,5 +20,5 @@ def client() -> Generator:
 
 
 @pytest.fixture(scope="module")
-def admin_token_headers(client: TestClient) -> Dict[str, str]:
+def admin_token_headers(client: TestClient) -> dict[str, str]:
     return get_admin_token_headers(client)

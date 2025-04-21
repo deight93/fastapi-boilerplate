@@ -1,12 +1,11 @@
 import logging
-import os
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
-LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
-if not os.path.exists(LOG_DIR):
-    os.makedirs(LOG_DIR)
+LOG_DIR = Path(__file__).parent.parent
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-LOG_FILE_PATH = os.path.join(LOG_DIR, "app.log")
+LOG_FILE_PATH = LOG_DIR / "app.log"
 
 LOGGING_LEVEL = logging.INFO
 LOGGING_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
