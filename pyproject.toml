@@ -86,4 +86,3 @@ asyncio_default_fixture_loop_scope = "function" # 비동기 fixture가 어떤 �
 
 [tool.setuptools]
 packages = ["app"]
-
