@@ -79,3 +79,6 @@ line-ending = "auto" # 운영체제에 맞는 라인 엔딩 자동 감지 및 �
 # Pydantic 등 런타임 타입 정보가 중요한 라이브러리에 필수적
 keep-runtime-typing = true
 
+[tool.setuptools]
+packages = ["app"]
+
