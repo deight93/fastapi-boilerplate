@@ -39,4 +39,6 @@ jobs:
           uv run ruff format --check .
 
       - name: Test with pytest
-        run: uv run -e ENV_STATE=dev pytest
+        env:
+          ENV_STATE: dev
+        run: uv run pytest
