@@ -1,4 +1,5 @@
 from datetime import UTC, datetime, timedelta
+from uuid import uuid4
 
 from jose import jwt
 from passlib.context import CryptContext
@@ -9,8 +10,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def create_token(subject: str, expire_minutes: int, role: str | None = None) -> str:
-    expire = datetime.now(UTC) + timedelta(minutes=expire_minutes)
-    to_encode = {"exp": expire, "sub": str(subject)}
+    now = datetime.now(UTC)
+    expire = now + timedelta(minutes=expire_minutes)
+    to_encode = {
+        "sub": str(subject),
+        "exp": expire,
+        "iat": now,  # 발급 시각 (issued at)
+        "jti": str(uuid4()),  # 고유 토큰 ID
+    }
     if role:
         to_encode.update(role=role)
     encoded_jwt = jwt.encode(

@@ -31,8 +31,8 @@ async def login_user(db: Session, form_data: OAuth2PasswordRequestForm) -> dict:
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",
-        "access_expires_in": 60 * 30,
-        "refresh_expires_in": 60 * 60,
+        "access_expires_in": 60 * settings.ACCESS_TOKEN_EXPIRE_MINUTES,
+        "refresh_expires_in": 60 * settings.REFRESH_TOKEN_EXPIRE_MINUTES,
     }
 
     return tokens
@@ -47,9 +47,9 @@ async def refresh_tokens(refresh_token: str, db: Session):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
         )
-    user_id: str = payload.get("sub")
+    user_id = int(payload.get("sub"))
     stmt = select(User).where(User.id == user_id)
-    _result = db.execute(stmt)
+    _result = await db.execute(stmt)
     user = _result.scalars().first()
     if not user:
         raise HTTPException(
@@ -66,7 +66,7 @@ async def refresh_tokens(refresh_token: str, db: Session):
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",
-        "access_expires_in": 60 * 30,
-        "refresh_expires_in": 60 * 60,
+        "access_expires_in": 60 * settings.ACCESS_TOKEN_EXPIRE_MINUTES,
+        "refresh_expires_in": 60 * settings.REFRESH_TOKEN_EXPIRE_MINUTES,
     }
     return tokens
