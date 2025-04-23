@@ -56,11 +56,14 @@ api-restart:
 code-beauty:
 	uv run ruff check --fix . && uv run ruff format --check .
 
+local-code-test:
+	uv run pytest --cov-report term-missing --cov --ignore temp
+
+dev-code-test:
+	docker compose exec app uv run pytest --cov-report term-missing --cov --ignore temp
+
 api-log:
 	docker compose logs -f app
-
-api-test:
-	docker compose exec app pytest --cov-report term-missing --cov --ignore temp
 
 db-migrate:
 	docker compose exec app alembic revision --autogenerate -m "${MSG}"
@@ -68,8 +71,8 @@ db-migrate:
 db-upgrade:
 	docker compose exec app alembic upgrade head
 
-poetry-show:
-	docker compose exec app poetry show
+uv-pip-list:
+	uv pip list
 
 pre-commit:
 	uv run pre-commit run --all-files
