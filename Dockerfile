@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.12.9-slim
 
 ENV PYTHONUNBUFFERED=1
 
@@ -9,8 +9,6 @@ ENV UV_LINK_MODE=copy
 
 # Change the working directory to the `app` directory
 WORKDIR /app
-
-ENV PATH="/app/.venv/bin:$PATH"
 
 COPY . .
 

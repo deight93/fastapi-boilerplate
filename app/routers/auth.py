@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Body, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -16,11 +16,11 @@ router = APIRouter(prefix="/auth", tags=["auth"])
     response_model=PostAuthLogin,
     summary="✅ 로그인",
 )
-def post_login(
+async def post_login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db),
 ):
-    tokens = login_user(db, form_data)
+    tokens = await login_user(db, form_data)
     tokens.update({"success": True, "message": None})
     return tokens
 
@@ -30,8 +30,10 @@ def post_login(
     response_model=PostAuthRefresh,
     summary="✅ 리프레시 토큰",
 )
-def post_refresh_token(refresh_token: str, db: Session = Depends(get_db)):
-    tokens = refresh_tokens(refresh_token, db)
+async def post_refresh_token(
+    refresh_token: Annotated[str, Body(..., embed=True)], db: Session = Depends(get_db)
+):
+    tokens = await refresh_tokens(refresh_token, db)
     response = {"success": True, "message": None}
     response.update(data=tokens)
     return response

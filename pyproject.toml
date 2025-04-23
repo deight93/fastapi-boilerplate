@@ -3,11 +3,11 @@ name = "fastapi-boilerplate"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11.8"
+requires-python = ">=3.12.9"
 dependencies = [
     "fastapi[standard]>=0.111.1",
     "redis>=5.0.7",
-    "sqlalchemy>=2.0.31",
+    "sqlalchemy[asyncio]>=2.0.31",
     "pydantic-settings>=2.3.4",
     "uvicorn >= 0.30.3",
     "alembic >= 1.13.2",
@@ -17,17 +17,23 @@ dependencies = [
     "itsdangerous >= 2.2.0",
     "passlib >= 1.7.4",
     "pathlib>=1.0.1",
+    "uvloop>=0.21.0",
+    "httptools>=0.6.4",
+    "httpx>=0.28.1",
+    "asyncpg>=0.30.0",
+    "bcrypt>=4.3.0",
 ]
 
 [dependency-groups]
 dev = [
-    "httpx>=0.28.1",
     "pre-commit>=4.2.0",
     "pytest>=8.3.5",
     "pytest-asyncio>=0.26.0",
     "ruff>=0.11.4",
     "pytest-cov >= 6.0.0",
     "mypy<2.0.0,>=1.8.0",
+    "testcontainers[postgresql,redis]>=4.10.0",
+    "pytest-asyncio>=0.26.0",
 ]
 
 # --- Pydantic Mypy 플러그인 설정 ---
@@ -81,9 +87,9 @@ line-ending = "auto" # 운영체제에 맞는 라인 엔딩 자동 감지 및 �
 keep-runtime-typing = true
 
 [tool.pytest.ini_options]
-asyncio_mode = "strict" # pytest-asyncio의 작동 모드를 지정
+asyncio_mode = "auto" # pytest-asyncio의 작동 모드를 지정
 asyncio_default_fixture_loop_scope = "function" # 비동기 fixture가 어떤 스코프의 event loop에 연결될지
+asyncio_default_test_loop_scope = "function"
 
 [tool.setuptools]
 packages = ["app"]
-

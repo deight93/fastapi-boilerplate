@@ -18,7 +18,7 @@ class AdminAuth(AuthenticationBackend):
             expire = datetime.now() + timedelta(days=1)
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
-            to_encode, settings.JWT_SECRET_KEY, algorithm=settings.ALGORITHM
+            to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM
         )
         return encoded_jwt
 
@@ -43,7 +43,7 @@ class AdminAuth(AuthenticationBackend):
             return False
         try:
             payload = jwt.decode(
-                token, settings.JWT_SECRET_KEY, algorithms=[settings.ALGORITHM]
+                token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
             )
         except JWTError:
             raise HTTPException(
