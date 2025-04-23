@@ -21,7 +21,7 @@ class Admin(Timestamp, Base):
     )
     name: Mapped[str] = mapped_column(String(256), nullable=False, comment="이름")
     email: Mapped[str] = mapped_column(String(256), nullable=False, comment="이메일")
-    role: Mapped[enum] = mapped_column(
+    role: Mapped[AdminRole] = mapped_column(
         Enum(AdminRole, name="admin_role_enum"), nullable=False, comment="관리자 권한"
     )
     hashed_password: Mapped[str] = mapped_column(

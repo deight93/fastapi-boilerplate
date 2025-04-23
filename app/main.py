@@ -9,7 +9,7 @@ from httpx import AsyncClient
 from sqladmin import Admin
 
 from app.admin.auth import authentication_admin
-from app.admin.views import UserAdmin
+from app.admin.views import AdminTable
 from app.core.database import engine
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
@@ -41,7 +41,7 @@ app.include_router(user.router)
 app.include_router(auth.router)
 
 admin = Admin(app, engine, authentication_backend=authentication_admin)
-admin.add_view(UserAdmin)
+admin.add_view(AdminTable)
 
 
 @app.get("/file-logging-test")
