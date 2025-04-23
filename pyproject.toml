@@ -3,11 +3,11 @@ name = "fastapi-boilerplate"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11.8"
+requires-python = ">=3.12.9"
 dependencies = [
     "fastapi[standard]>=0.111.1",
     "redis>=5.0.7",
-    "sqlalchemy>=2.0.31",
+    "sqlalchemy[asyncio]>=2.0.31",
     "pydantic-settings>=2.3.4",
     "uvicorn >= 0.30.3",
     "alembic >= 1.13.2",
@@ -20,6 +20,7 @@ dependencies = [
     "uvloop>=0.21.0",
     "httptools>=0.6.4",
     "httpx>=0.28.1",
+    "asyncpg>=0.30.0",
 ]
 
 [dependency-groups]

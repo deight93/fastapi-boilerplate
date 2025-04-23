@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -10,7 +11,6 @@ from sqladmin import Admin
 from app.admin.auth import authentication_admin
 from app.admin.views import UserAdmin
 from app.core.database import engine
-from app.core.logger import logging
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
 from app.routers import auth, user

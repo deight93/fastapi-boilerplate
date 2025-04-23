@@ -1,9 +1,9 @@
 import enum
 
-from sqlalchemy import Column, Enum, Integer, String
+from sqlalchemy import Enum, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from app.core.database import Base
-from app.models.base import Timestamp
+from app.models.base import Base, Timestamp
 
 
 class AdminRole(enum.Enum):
@@ -15,11 +15,15 @@ class Admin(Timestamp, Base):
     __tablename__ = "admin"
     __table_args__ = {"comment": "관리자"}
 
-    id = Column(Integer, primary_key=True, index=True, comment="PK")
-    admin_id = Column(String(256), nullable=False, comment="관리자 ID")
-    name = Column(String(256), nullable=False, comment="이름")
-    email = Column(String(256), nullable=False, comment="이메일")
-    role = Column(
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, comment="PK")
+    admin_id: Mapped[str] = mapped_column(
+        String(256), nullable=False, comment="관리자 ID"
+    )
+    name: Mapped[str] = mapped_column(String(256), nullable=False, comment="이름")
+    email: Mapped[str] = mapped_column(String(256), nullable=False, comment="이메일")
+    role: Mapped[enum] = mapped_column(
         Enum(AdminRole, name="admin_role_enum"), nullable=False, comment="관리자 권한"
     )
-    hashed_password = Column(String(256), nullable=False, comment="해시된 비밀번호")
+    hashed_password: Mapped[str] = mapped_column(
+        String(256), nullable=False, comment="해시된 비밀번호"
+    )
