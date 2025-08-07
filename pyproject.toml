@@ -22,6 +22,7 @@ dependencies = [
     "httpx>=0.28.1",
     "asyncpg>=0.30.0",
     "bcrypt>=4.3.0",
+    "cryptography>=45.0.6",
 ]
 
 [dependency-groups]
@@ -32,8 +33,22 @@ dev = [
     "ruff>=0.11.4",
     "pytest-cov >= 6.0.0",
     "mypy<2.0.0,>=1.8.0",
-    "testcontainers[postgresql,redis]>=4.10.0",
+    "pytest-html>=4.1.1",
     "pytest-asyncio>=0.26.0",
+]
+
+# Coverage.py (pytest-cov) 설정
+[tool.coverage.run]
+branch = true                     # 분기 커버리지까지 계산
+concurrency = ["greenlet"]        # greenlet 내부도 추적
+source = ["apps"]                 # 커버리지 대상으로 잡을 패키지(폴더)들
+
+[tool.coverage.report]
+show_missing = true               # 빠진 줄 표시에 ^^^ 출력
+skip_empty = true
+omit = [
+    "apps/*/tests/*",       # 모든 tests 디렉토리 제외
+    "*/tests/*",            # 루트/하위 tests도 제외
 ]
 
 # --- Pydantic Mypy 플러그인 설정 ---
@@ -85,6 +100,10 @@ line-ending = "auto" # 운영체제에 맞는 라인 엔딩 자동 감지 및 �
 # `from __future__ import annotations` 사용 시에도 런타임에 필요한 타입 어노테이션 유지
 # Pydantic 등 런타임 타입 정보가 중요한 라이브러리에 필수적
 keep-runtime-typing = true
+
+[tool.ruff.lint.pep8-naming]
+# Allow Pydantic's `@validator` decorator to trigger class method treatment.
+classmethod-decorators = ["classmethod", "pydantic.field_validator"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto" # pytest-asyncio의 작동 모드를 지정
