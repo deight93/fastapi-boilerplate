@@ -45,31 +45,54 @@ else
 endif
 
 api-up:
-	docker start app
+	docker start ${CONTAINER_NAME}
 
 api-down:
-	docker stop app
+	docker stop ${CONTAINER_NAME}
 
 api-restart:
-	docker restart app
+	docker restart ${CONTAINER_NAME}
 
 code-beauty:
 	uv run ruff check --fix . && uv run ruff format --check .
 
-local-code-test:
-	uv run pytest --cov-report term-missing --cov --ignore temp
+code-test:
+	docker run --rm \
+		--env-file .env \
+		-v $(PWD)/app:/app/app \
+		-v $(PWD)/tests:/app/tests \
+		--network fastapi-boilerplate_fastapi-boilerplate-network \
+		fastapi-boilerplate-app:latest \
+		uv run pytest --durations=0 -vv --cov-report term-missing --cov --ignore temp $(TARGET)
 
-dev-code-test:
-	docker compose exec app uv run pytest --cov-report term-missing --cov --ignore temp
+code-test-not-cov:
+	docker run --rm \
+		--env-file .env \
+		-v $(PWD)/app:/app/app \
+		-v $(PWD)/tests:/app/tests \
+		--network fastapi-boilerplate_fastapi-boilerplate-network \
+		fastapi-boilerplate-app:latest \
+		uv run pytest --ignore temp $(TARGET)
+
+code-test-report:
+	docker run --rm \
+		--env-file .env \
+		-v $(PWD)/app:/app/app \
+		-v $(PWD)/tests:/app/tests \
+		-v $(PWD)/htmlcov:/app/htmlcov \
+		-v $(PWD)/report:/app/report \
+		--network fastapi-boilerplate_fastapi-boilerplate-network \
+		fastapi-boilerplate-app:latest \
+		uv run pytest --cov=app --cov-report html:/app/htmlcov --ignore temp $(TARGET) --html=/app/report/report.html
 
 api-log:
-	docker compose logs -f app
+	docker compose logs -f ${CONTAINER_NAME}
 
 db-migrate:
-	docker compose exec app alembic revision --autogenerate -m "${MSG}"
+	docker compose exec ${CONTAINER_NAME} alembic revision --autogenerate -m "${MSG}"
 
 db-upgrade:
-	docker compose exec app alembic upgrade head
+	docker compose exec ${CONTAINER_NAME} alembic upgrade head
 
 uv-pip-list:
 	uv pip list
