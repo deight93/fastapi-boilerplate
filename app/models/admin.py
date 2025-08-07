@@ -1,6 +1,6 @@
 import enum
 
-from sqlalchemy import Enum, Integer, String
+from sqlalchemy import Enum, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base, Timestamp
@@ -13,7 +13,15 @@ class AdminRole(enum.Enum):
 
 class Admin(Timestamp, Base):
     __tablename__ = "admin"
-    __table_args__ = {"comment": "관리자"}
+    __table_args__ = (
+        UniqueConstraint(
+            "admin_id",
+            "deleted_at",
+            postgresql_nulls_not_distinct=True,
+        ),
+        UniqueConstraint("email", "deleted_at", postgresql_nulls_not_distinct=True),
+        {"comment": "관리자"},
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True, comment="PK")
     admin_id: Mapped[str] = mapped_column(
