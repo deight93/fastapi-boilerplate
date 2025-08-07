@@ -31,7 +31,7 @@ class EnvSettings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
-    REDIS_PASSWORD: str
+    REDIS_PASSWORD: str = ""
 
     @field_validator("ALLOWED_ORIGINS")
     def parsing_allowed_origins(cls, value):  # noqa: N805
