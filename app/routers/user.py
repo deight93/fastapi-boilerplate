@@ -19,7 +19,4 @@ async def register(user: UserRegister, db: AsyncSession = Depends(get_db)):
 
 @router.get("/me", response_model=GetUserMe, summary="✅ 내정보")
 async def read_user_me(user=Depends(get_current_user)):
-    """
-    Get current user.
-    """
     return {"success": True, "message": None, "data": user}
