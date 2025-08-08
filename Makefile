@@ -89,10 +89,10 @@ api-log:
 	docker compose logs -f ${CONTAINER_NAME}
 
 db-migrate:
-	docker compose exec ${CONTAINER_NAME} alembic revision --autogenerate -m "${MSG}"
+	docker compose exec app uv run alembic revision --autogenerate -m "${MSG}"
 
 db-upgrade:
-	docker compose exec ${CONTAINER_NAME} alembic upgrade head
+	docker compose exec app uv run alembic upgrade head
 
 uv-pip-list:
 	uv pip list

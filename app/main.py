@@ -11,9 +11,13 @@ from sqladmin import Admin
 from app.admin.auth import authentication_admin
 from app.admin.views import AdminTable
 from app.core.database import engine
+from app.core.exceptions import (
+    AppError,
+    app_exception_handler,
+)
 from app.core.metadata import swagger_metadata
 from app.core.setting import settings
-from app.routers import auth, user
+from app.routers import auth, item, user
 
 
 @asynccontextmanager
@@ -29,6 +33,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[dict[str, AsyncClient]]:
 
 app = FastAPI(**swagger_metadata, lifespan=lifespan, debug=True)
 
+app.add_exception_handler(AppError, app_exception_handler)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
@@ -39,6 +45,7 @@ app.add_middleware(
 
 app.include_router(user.router)
 app.include_router(auth.router)
+app.include_router(item.router)
 
 admin = Admin(app, engine, authentication_backend=authentication_admin)
 admin.add_view(AdminTable)

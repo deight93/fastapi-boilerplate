@@ -1,9 +1,10 @@
-from fastapi import HTTPException, status
+from fastapi import status
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.exceptions import AppError, ErrorCode
 from app.core.security import create_token, verify_password
 from app.core.setting import settings
 from app.models.user import User
@@ -13,12 +14,12 @@ async def login_user(db: Session, form_data: OAuth2PasswordRequestForm) -> dict:
     stmt = select(User).where(User.user_id == form_data.username)
     _result = await db.execute(stmt)
     user = _result.scalars().first()
-    if not user or not verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+
+    if not user:
+        raise AppError(ErrorCode.UNAUTHORIZED_401, status.HTTP_401_UNAUTHORIZED)
+
+    if not verify_password(form_data.password, user.hashed_password):
+        raise AppError(ErrorCode.UNAUTHORIZED_401, status.HTTP_401_UNAUTHORIZED)
 
     user_id = str(user.id)
     access_token = create_token(
@@ -44,17 +45,14 @@ async def refresh_tokens(refresh_token: str, db: Session):
             refresh_token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
         )
     except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
-        )
+        raise AppError(ErrorCode.JWT_ERROR_401, status.HTTP_401_UNAUTHORIZED)
+
     user_id = int(payload.get("sub"))
     stmt = select(User).where(User.id == user_id)
-    _result = await db.execute(stmt)
-    user = _result.scalars().first()
+    user = (await db.execute(stmt)).scalars().first()
+
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
-        )
+        raise AppError(ErrorCode.UNAUTHORIZED_401, status.HTTP_401_UNAUTHORIZED)
 
     access_token = create_token(
         subject=user.id, expire_minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
