@@ -413,3 +413,4 @@ zsdoc/data
 
 temp/*
 letsencrypt/
+.logfire

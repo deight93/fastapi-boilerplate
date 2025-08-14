@@ -63,7 +63,7 @@ code-test:
 		-v $(PWD)/tests:/app/tests \
 		--network fastapi-boilerplate_fastapi-boilerplate-network \
 		fastapi-boilerplate-app:latest \
-		uv run pytest --durations=0 -vv --cov-report term-missing --cov --ignore temp $(TARGET)
+		uv run pytest --durations=0 -vv --cov-report term-missing --cov=app --ignore temp $(TARGET)
 
 code-test-not-cov:
 	docker run --rm \
