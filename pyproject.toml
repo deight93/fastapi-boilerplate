@@ -23,6 +23,7 @@ dependencies = [
     "asyncpg>=0.30.0",
     "bcrypt>=4.3.0",
     "cryptography>=45.0.6",
+    "logfire[fastapi]>=4.2.0",
 ]
 
 [dependency-groups]
