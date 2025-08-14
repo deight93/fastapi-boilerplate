@@ -2,6 +2,7 @@ import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
+import logfire
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -32,6 +33,18 @@ async def lifespan(app: FastAPI) -> AsyncIterator[dict[str, AsyncClient]]:
 
 
 app = FastAPI(**swagger_metadata, lifespan=lifespan, debug=True)
+
+if settings.LOGFIRE_TOKEN:
+    logfire.configure(
+        token=settings.LOGFIRE_TOKEN,
+    )
+else:
+    logfire.configure(
+        environment="local",
+        local=True,
+        send_to_logfire=False,
+    )
+logfire.instrument_fastapi(app)
 
 app.add_exception_handler(AppError, app_exception_handler)
 

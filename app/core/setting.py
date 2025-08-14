@@ -11,6 +11,7 @@ class EnvSettings(BaseSettings):
     JWT_ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     REFRESH_TOKEN_EXPIRE_MINUTES: int
+    LOGFIRE_TOKEN: str = ""
 
     # 공통 admin 설정
     ADMIN_ID: str
