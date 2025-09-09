@@ -7,6 +7,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from httpx import AsyncClient
+from scalar_fastapi import (
+    SearchHotKey,
+    get_scalar_api_reference,
+)
 from sqladmin import Admin
 
 from app.admin.auth import authentication_admin
@@ -62,6 +66,26 @@ app.include_router(item.router)
 
 admin = Admin(app, engine, authentication_backend=authentication_admin)
 admin.add_view(AdminTable)
+
+
+@app.get("/scalar", include_in_schema=False)
+async def scalar_html():
+    return get_scalar_api_reference(
+        openapi_url=app.openapi_url,
+        title=app.title,
+        show_sidebar=True,
+        hide_download_button=False,
+        hide_models=False,
+        dark_mode=True,
+        search_hot_key=SearchHotKey.K,
+        default_open_all_tags=True,
+        # layout=Layout.CLASSIC,
+        # servers=[
+        #     {"url": "https://api.production.example.com"},
+        #     {"url": "https://api.staging.example.com"},
+        # ],
+        # authentication={"bearerAuth": "your-static-token-if-needed"},
+    )
 
 
 @app.get("/file-logging-test")
